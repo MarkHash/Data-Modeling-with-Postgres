@@ -4,8 +4,18 @@ import psycopg2
 import pandas as pd
 from sql_queries import *
 
+'''
+This module reads and processes files from `song_data` and `log_data` and loads them to tables
+'''
 
 def process_song_file(cur, filepath):
+    '''
+    This method reads a file and stores `song_data` to DB
+
+    Parameters:
+        cur (_cursor): cursor of DB connection
+        filepath (str): file path 
+    '''
     # open song file
     df = pd.read_json(filepath, lines=True)
 
@@ -20,6 +30,13 @@ def process_song_file(cur, filepath):
     cur.execute(artist_table_insert, artist_data)
 
 def process_log_file(cur, filepath):
+    '''
+    This method reads a file and stores `log_data` to DB
+
+    Parameters:
+        cur (_cursor): cursor of DB connection
+        filepath (str): file path 
+    '''
     # open log file
     df = pd.read_json(filepath, lines=True)
 
@@ -64,6 +81,15 @@ def process_log_file(cur, filepath):
 
 
 def process_data(cur, conn, filepath, func):
+    '''
+    This method processes files and prepares for ETL
+
+    Parameters:
+        cur (_cursor): cursor of DB connection
+        conn (connection):: DB connection
+        filepath (str): file path
+        func (function): function name 
+    '''
     # get all files matching extension from directory
     all_files = []
     for root, dirs, files in os.walk(filepath):
